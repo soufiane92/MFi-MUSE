@@ -1,0 +1,22 @@
+{
+    "menu_name": "MFiX",
+    "menu_items":
+    [
+        {
+            "script": "${PYTHON_SCRIPTS}/mfix",
+            "name": "MFiX",
+            "workdir": "${PREFIX}",
+            "icon": "${MENU_DIR}/mfix.ico",
+            "desktop": true,
+            "quicklaunch": true
+        },
+        {
+            "name": "MFiX Documentation",
+            "webbrowser": "file://${PREFIX}/lib/site-packages/mfix/doc/_build/html/index.html"
+        },
+        {
+            "name": "MFiX Web Site",
+            "webbrowser": "https://mfix.netl.doe.gov/mfix"
+        }
+    ]
+}

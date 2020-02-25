@@ -1,0 +1,17 @@
+.kwname {
+    color:red;
+}
+
+.kwtype {
+    color:blue;
+}
+
+.required {
+    float:right;
+    text-transform:uppercase;
+    font-weight:bold;
+}
+
+.u {
+    text-decoration: underline;
+}

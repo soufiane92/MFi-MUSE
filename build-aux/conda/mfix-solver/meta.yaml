@@ -1,0 +1,66 @@
+package:
+  name: mfix-solver
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
+
+build:
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', '') }}
+
+  entry_points:
+    - mfixsolver = mfixgui.pymfix:main
+
+source:
+  path: ../../..
+
+requirements:
+  build:
+    - cmake-binary >=3.9
+    - m2w64-toolchain # [win]
+    - make
+    - nomkl # [not win]
+    - {{ compiler('c') }} # [not win]
+    - {{ compiler('fortran') }} # [not win]
+
+  host:
+    - flask
+    - libpython # [win]
+    - matplotlib
+    - nomkl # [not win]
+    - numpy
+    - psutil
+    - pyqtgraph
+    - python >=3.6
+    - qtpy
+    - setuptools
+    - simplejson
+    - wheel >=0.25.0
+
+  run:
+    - flask
+    - libgcc >=5.2 # [linux]
+    - libboost-mingw # [win]
+    - libpython # [win]
+    - m2w64-toolchain # [win]
+    - matplotlib
+    - mfix-gui {{ environ.get('GIT_DESCRIBE_TAG', '') }}.*
+    - psutil
+    - pyqtgraph
+    - python >=3.6
+    - qtpy
+    - setuptools
+    - simplejson
+    - wheel >=0.25.0
+    - {{ pin_compatible('numpy') }}
+
+test:
+  source_files:
+    - tutorials
+
+  commands:
+    - timeout 250s mfixsolver -f tutorials/FluidBed_2D/FB2D.mfx [linux]
+    - cd tutorials/Silane_Pyrolysis; build_mfixsolver [linux]
+
+about:
+  home: https://mfix.netl.doe.gov/mfix
+  license: NONE
+  summary: 'Multiphase Fluid Solver'
+  license_family: NONE
