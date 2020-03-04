@@ -122,8 +122,13 @@ CONTAINS
 
 ! ===================================== !
       Allocate(  PN (30*MAX_PIP) )
-      Allocate(  VM (30*MAX_PIP) )
+      Allocate(  PT (30*MAX_PIP) )
+      
+      Allocate(  VM_N (30*MAX_PIP) )
+      Allocate(  VM_T (30*MAX_PIP) )
+      
       Allocate(  DPN (30*MAX_PIP) )
+      Allocate(  DPT (30*MAX_PIP) )
       
       Allocate(  ACTIVE (30*MAX_PIP) )
 

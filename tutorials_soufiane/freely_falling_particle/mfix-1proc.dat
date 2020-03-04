@@ -100,7 +100,7 @@
   !NO_K = .FALSE.
   NO_K = .TRUE. 
 
-  FACTOR_RLM = 3.
+  FACTOR_RLM = 1.5
   
 ! Friction coefficients. (1)
   MEW =   0.0                  ! particle-particle
@@ -144,7 +144,7 @@
   RO_s0(1) =   2600   ! (kg/m)
 
 
-  DES_USR_VAR_SIZE = 23
+  DES_USR_VAR_SIZE = 44
 
 #_______________________________________________________________________
 # INITIAL CONDITIONS SECTION

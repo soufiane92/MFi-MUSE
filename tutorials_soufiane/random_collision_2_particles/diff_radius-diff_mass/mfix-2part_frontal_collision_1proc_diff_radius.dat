@@ -168,7 +168,7 @@
 
 
 
-  DES_USR_VAR_SIZE = 23
+  DES_USR_VAR_SIZE = 44
 
 #_______________________________________________________________________
 # INITIAL CONDITIONS SECTION
