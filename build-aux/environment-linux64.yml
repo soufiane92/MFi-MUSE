@@ -1,0 +1,32 @@
+name: mfix-linux64
+channels:
+  - defaults
+dependencies:
+  - boost=1.65.1
+  - cmake-binary
+  - dbus=1.12.2
+  - expat=2.2.5
+  - flask
+  - future
+  - glib=2.53.6
+  - gst-plugins-base=1.12.4
+  - gstreamer
+  - icu=58.2
+  - libboost=1.65.1
+  - libgcc-ng=7.2.0
+  - libgcc=7.2.0
+  - libgfortran-ng=7.2.0
+  - libstdcxx-ng=7.2.0
+  - libxcb=1.12
+  - libxml2=2.9.7
+  - matplotlib
+  - nomkl
+  - numpy=1.14.*
+  - psutil
+  - py-boost=1.65.1
+  - pyqt=5.*
+  - pyqtgraph
+  - python=3.6.*
+  - qtpy
+  - simplejson
+  - vtk

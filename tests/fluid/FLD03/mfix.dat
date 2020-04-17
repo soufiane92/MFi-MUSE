@@ -1,0 +1,114 @@
+########################################################################
+#                                                                      #
+# Author: M. Syamlal                                    Date: Dec 1999 #
+# Revised: A. Choudhary and J. Musser                   Date: Jun 2015 #
+#                                                                      #
+# A top wall driven cavity with only fluid phase present in the        #
+# absence of gravitational forces.                                     #
+#                                                                      #
+# REF: Ghia U., Ghia K.N., and Shin C.T., High-Re Solutions for Incom- #
+#      pressible Flow Using the Navier-Stokes Equations and a Multi-   #
+#      grid Method, Journal of Computational Physics, Volume 48, pages #
+#      387-411, 1982. doi: 10.1016/0021-9991(82)90058-4                #
+#                                                                      #
+########################################################################
+
+  RUN_NAME = 'FLD03'
+  DESCRIPTION = 'Lid-driven cavity'
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  UNITS = 'SI'
+  RUN_TYPE = 'NEW'
+
+  TIME =  0.0
+  TSTOP = 1.0d8
+
+  DT =     1.0e-2
+  DT_FAC = 1.0
+
+  ENERGY_EQ =     .F.
+  SPECIES_EQ(0) = .F.
+
+  GRAVITY = 0.0
+
+  CALL_USR = .T.
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  LEQ_PC(1:9) = 9*'DIAG'
+
+  DISCRETIZE(1:9) = 9*2
+  DETECT_STALL = .F.
+
+  NORM_G = 1.0
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES   = 'CARTESIAN'
+
+  ZLENGTH = 1.0   NO_K = .T.
+  XLENGTH = 1.0   IMAX = 128
+  YLENGTH = 1.0   JMAX = 128
+
+#_______________________________________________________________________
+# GAS-PHASE SECTION
+
+  RO_G0 = 1.0     ! (kg/m3)
+  MU_G0 = 0.01    ! (Pa.sec)
+
+#_______________________________________________________________________
+# SOLIDS-PHASE SECTION
+
+  MMAX = 0
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+  IC_X_w(1) =    0.00  ! (m)
+  IC_X_e(1) =    1.00  ! (m)
+  IC_Y_s(1) =    0.00  ! (m)
+  IC_Y_n(1) =    1.00  ! (m)
+
+  IC_EP_g(1) =   1.00
+
+  IC_U_g(1) =   -1.0e-2! (m/sec)
+  IC_V_g(1) =    0.00  ! (m/sec)
+
+#_______________________________________________________________________
+# BOUNDARY CONDITIONS SECTION
+
+! West, East and South are default No-Slip Walls (NSW)
+
+! North: Lid with a constant velocity of 1.0 m/s along +x using a
+! partial slip wall (PSW) implemented as dv/dn + Hw(V-Vw) = 0.0
+! where Vw is the wall speed and Hw is undefined (Inf).
+!---------------------------------------------------------------------//
+  BC_X_w(1) =   0.00  ! (m)
+  BC_X_e(1) =   1.00  ! (m)
+  BC_Y_s(1) =   1.00  ! (m)
+  BC_Y_n(1) =   1.00  ! (m)
+
+  BC_TYPE(1) = 'PSW'
+
+  BC_Uw_g(1) =  1.00  ! (m/sec)
+  BC_Vw_g(1) =  0.00  ! (m/sec)
+
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT =        5.0d3 ! (sec)
+  SPX_DT(1:9) = 9*5.0d3 ! (sec)
+
+  FULL_LOG = .F.
+
+  RESID_STRING  = 'P0' 'U0' 'V0'
+
+#_______________________________________________________________________
+# DMP SETUP
+
+!  NODESI =  1  NODESJ =  1  NODESK =  1

@@ -1,0 +1,113 @@
+#########################################################################
+#                                                                       #
+# Author: Avinash Vaidheeswaran                         Date: July 2016 #
+# Turbulent flow in a pipe problem:                                     #
+#                                                                       #
+# Turbulent flow through a channel is simulated and the results are     #
+# compared with the data from DNS                                       #
+#                                                                       #
+#########################################################################
+
+  RUN_NAME = 'FLD07'
+  DESCRIPTION = 'Turbulent channel flow'
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  UNITS = 'SI'
+  RUN_TYPE = 'NEW'
+
+  TIME =  0.0
+  TSTOP = 1.0d8
+
+  DT = 0.02
+
+  ENERGY_EQ =     .F.
+  SPECIES_EQ(0) = .F.
+
+  GRAVITY = 0.0
+
+  CALL_USR = .T.
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  DISCRETIZE(1:9) = 9*2
+
+  NORM_g = 0.0
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES = 'CARTESIAN'
+
+  ZLENGTH =  1.00     NO_K = .T.
+  XLENGTH =  2.00     IMAX =  8
+  YLENGTH =  1.00     JMAX =  4
+
+#_______________________________________________________________________
+# GAS-PHASE SECTION
+
+  RO_g0 = 1.0        ! (kg/m3)
+  MU_g0 = 1.0d-04    ! (Pa.s)
+
+  TURBULENCE_MODEL = 'K_EPSILON'
+
+  MU_GMAX =  1.0d6   ! (Pa.s)
+
+#_______________________________________________________________________
+# SOLIDS-PHASE SECTION
+
+  MMAX = 0
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+  IC_X_w(1) =      0.0     ! (m)
+  IC_X_e(1) =      2.0     ! (m)
+  IC_Y_s(1) =      0.0     ! (m)
+  IC_Y_n(1) =      1.0     ! (m)
+
+  IC_EP_G(1) =     1.0
+
+  IC_P_G(1) =      0.0     ! (Pa)
+
+  IC_U_G(1) =      1.0d-6  ! (m/sec)
+  IC_V_G(1) =      1.0     ! (m/sec)
+
+  IC_K_TURB_G(1) = 0.010   ! (m2/s2)
+  IC_E_TURB_G(1) = 0.001   ! (m2/s3)
+
+#_______________________________________________________________________
+# BOUNDARY CONDITIONS SECTION
+
+! Flow boundaries: Periodic with specified pressure drop
+!---------------------------------------------------------------------//
+  CYCLIC_Y_PD = .T.
+  DELP_Y = @(0.0543496*0.0543496)    ! (Pa)
+
+
+! The east and west boundaries are no-slip walls (NSW)
+!---------------------------------------------------------------------//
+
+  BC_X_w(1:2) =     0.0     2.0    ! (m)
+  BC_X_e(1:2) =     0.0     2.0    ! (m)
+  BC_Y_s(1:2) =     0.0     0.0    ! (m)
+  BC_Y_n(1:2) =     1.0     1.0    ! (m)
+
+  BC_TYPE(1:2) = 2*'NSW'
+
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT = 1.0d6
+  SPX_DT(1:9) = 9*1.0
+
+  FULL_LOG = .F.
+  RESID_STRING  =    'P0' 'U0' 'V0' 'K0'
+
+#_______________________________________________________________________
+# DMP SETUP
+
+!  NODESI = 1    NODESJ = 2    NODESK = 1

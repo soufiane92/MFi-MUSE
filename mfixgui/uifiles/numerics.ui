@@ -1,0 +1,938 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>numerics</class>
+ <widget class="QWidget" name="numerics">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>581</width>
+    <height>755</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Numerics</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_10">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QWidget" name="top_frame" native="true">
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover {
+    color:#64B5F6;;
+    background-color: transparent;
+}
+QPushButton:pressed {
+    color: #64B5F6;
+    background-color: transparent;
+}
+QPushButton:checked {
+    font: bold;
+    background-color: transparent;
+}
+</string>
+     </property>
+     <layout class="QGridLayout" name="gridlayout_tab_btns">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pushbutton_discretization">
+        <property name="text">
+         <string>Discretization</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="pushbutton_preconditioner">
+        <property name="text">
+         <string>Preconditioner</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="pushbutton_residuals">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Residuals</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pushbutton_linear_solver">
+        <property name="text">
+         <string>Linear Solver</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Line" name="line_numerics">
+        <property name="styleSheet">
+         <string notr="true">QWidget{
+  background-color: #64B5F6;
+  border-color: #64B5F6;
+}</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="pushbutton_advanced">
+        <property name="text">
+         <string>Advanced</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QStackedWidget" name="stackedwidget_numerics">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QStackedWidget{background-color:white;}
+      </string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="residuals">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>0</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_max_nit">
+         <property name="text">
+          <string>Maximum iterations</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="LineEdit" name="lineedit_keyword_norm_s">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_norm_s">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Solids normalization</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="LineEdit" name="lineedit_keyword_max_nit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_tol_diverge">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Minimum residual for divergence </string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="LineEdit" name="lineedit_keyword_tol_diverge"/>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupbox_residuals">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="title">
+          <string>Maximum residual at convergence</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_tol_resid">
+            <property name="text">
+             <string>Continuity + Momentum</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="LineEdit" name="lineedit_keyword_tol_resid">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_tol_resid_t">
+            <property name="text">
+             <string>Energy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="LineEdit" name="lineedit_keyword_tol_resid_t">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_tol_resid_x">
+            <property name="text">
+             <string>Species</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="LineEdit" name="lineedit_keyword_tol_resid_x">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_tol_resid_th">
+            <property name="text">
+             <string>Granular Energy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="LineEdit" name="lineedit_keyword_tol_resid_th">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_tol_resid_scalar">
+            <property name="text">
+             <string>Scalar/K-ε</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="LineEdit" name="lineedit_keyword_tol_resid_scalar">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_norm_g">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Fluid normalization</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="LineEdit" name="lineedit_keyword_norm_g">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="Line" name="line_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="discretization">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item row="1" column="0" colspan="2">
+        <widget class="Line" name="line_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_cn_on">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Temporal discretization</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="ComboBox" name="combobox_cn_on">
+         <item>
+          <property name="text">
+           <string>Implicit Euler</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Crank-Nicholson</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>451</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupbox_discretization">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="title">
+          <string>Spatial discretization</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QTableWidget" name="tablewidget_discretization">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>150</number>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderStretchLastSection">
+             <bool>false</bool>
+            </attribute>
+            <row>
+             <property name="text">
+              <string>Gas pressure</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Volume fraction</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>U-Momentum</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>V-Momentum</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>W-Momentum</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Energy</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Mass Fraction</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Granular Energy</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Scalar/K-ε</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>DES Diffusion</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>Scheme</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Relaxation Factor</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="CheckBox" name="checkbox_keyword_chi_scheme">
+         <property name="text">
+          <string>Enable chi-scheme correction</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="CheckBox" name="checkbox_keyword_def_cor">
+         <property name="text">
+          <string>Enable deferred correction</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="linear_solver">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tablewidget_linear_solver">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <row>
+          <property name="text">
+           <string>Gas pressure</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Volume fraction</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>U-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>V-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>W-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Energy</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Mass Fraction</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Granular Energy</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Scalar/K-ε</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>DES Diffusion</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Solver</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Iter.</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tol.</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>460</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="preconditioner">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tablewidget_preconditioner">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::NoSelection</enum>
+         </property>
+         <row>
+          <property name="text">
+           <string>Gas pressure</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Volume fraction</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>U-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>V-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>W-Momentum</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Energy</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Mass Fraction</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Granular Energy</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Scalar/K-ε</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>DES Diffusion</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Preconditioner</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Sweep</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>466</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="advanced">
+      <layout class="QGridLayout" name="gridLayout_7">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_max_inlet_vel_fac">
+         <property name="text">
+          <string>Maximum inlet velocity factor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="2">
+        <widget class="LineEdit" name="lineedit_keyword_max_inlet_vel_fac"/>
+       </item>
+       <item row="1" column="0" colspan="4">
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="label_ur_f_gs">
+         <property name="text">
+          <string>Drag under-relaxation factor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2" colspan="2">
+        <widget class="LineEdit" name="lineedit_keyword_ur_f_gs"/>
+       </item>
+       <item row="3" column="0" colspan="3">
+        <widget class="QLabel" name="label_ur_kth_sml">
+         <property name="text">
+          <string>IA theory conductivity under-relaxation factor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="LineEdit" name="lineedit_keyword_ur_kth_sml"/>
+       </item>
+       <item row="4" column="1">
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>790</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>mfixgui.widgets.base</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>mfixgui.widgets.base</header>
+  </customwidget>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>mfixgui.widgets.base</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>pushbutton_residuals</tabstop>
+  <tabstop>pushbutton_discretization</tabstop>
+  <tabstop>pushbutton_linear_solver</tabstop>
+  <tabstop>pushbutton_preconditioner</tabstop>
+  <tabstop>pushbutton_advanced</tabstop>
+  <tabstop>lineedit_keyword_tol_resid</tabstop>
+  <tabstop>lineedit_keyword_tol_resid_t</tabstop>
+  <tabstop>lineedit_keyword_tol_resid_x</tabstop>
+  <tabstop>lineedit_keyword_tol_resid_th</tabstop>
+  <tabstop>lineedit_keyword_tol_resid_scalar</tabstop>
+  <tabstop>lineedit_keyword_tol_diverge</tabstop>
+  <tabstop>combobox_cn_on</tabstop>
+  <tabstop>tablewidget_discretization</tabstop>
+  <tabstop>checkbox_keyword_def_cor</tabstop>
+  <tabstop>checkbox_keyword_chi_scheme</tabstop>
+  <tabstop>tablewidget_linear_solver</tabstop>
+  <tabstop>tablewidget_preconditioner</tabstop>
+  <tabstop>lineedit_keyword_max_inlet_vel_fac</tabstop>
+  <tabstop>lineedit_keyword_ur_f_gs</tabstop>
+  <tabstop>lineedit_keyword_ur_kth_sml</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

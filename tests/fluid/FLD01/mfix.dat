@@ -1,0 +1,115 @@
+########################################################################
+#                                                                      #
+# Author: Aniruddha Choudhary                           Date: Jan 2015 #
+# Horizontal channel (rectangular plane Poiseuille flow)               #
+#                                                                      #
+# A pressure gradient is imposed over x-axis cyclic boundaries. The    #
+# north and south walls are no-slip.                                   #
+#                                                                      #
+########################################################################
+
+  RUN_NAME = 'FLD01'
+  DESCRIPTION = 'Steady, 2D Poiseuille Flow'
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  UNITS = 'SI'
+  RUN_TYPE = 'NEW'
+
+  Time = 0.0 ! Steady state solution
+
+  ENERGY_EQ =     .F.
+  SPECIES_EQ(0) = .F.
+
+  GRAVITY = 0.0
+
+  CALL_USR = .T.
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  MAX_NIT =    200000
+  TOL_RESID =   1.0E-10
+
+  LEQ_PC(1:9) = 9*'NONE'
+
+  DISCRETIZE(1:9) = 9*2
+  NORM_G = 0.0
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES = 'CARTESIAN'
+
+  ZLENGTH = 1.00     NO_K = .T.
+  XLENGTH = 0.20     IMAX = 8
+  YLENGTH = 0.01     JMAX = 8
+
+#_______________________________________________________________________
+# GAS-PHASE SECTION
+
+  RO_g0 = 1.0     ! (kg/m3)
+  MU_g0 = 1.0d-3  ! (Pa.s)
+
+#_______________________________________________________________________
+# SOLIDS-PHASE SECTION
+
+  MMAX = 0
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+  IC_X_w(1) =    0.00    ! (m)
+  IC_X_e(1) =    0.20    ! (m)
+  IC_Y_s(1) =    0.00    ! (m)
+  IC_Y_n(1) =    0.01    ! (m)
+
+  IC_EP_g(1) =   1.0
+
+  IC_P_g(1) =    0.0     ! (Pa)
+
+  IC_U_g(1) =   10.0     ! (m/sec)
+  IC_V_g(1) =    0.0     ! (m/sec)
+
+#_______________________________________________________________________
+# BOUNDARY CONDITIONS SECTION
+
+! Inlet and outlet: Periodic BC
+!---------------------------------------------------------------------//
+
+  CYCLIC_X_PD = .T.
+  DELP_X =     240.00    ! (Pa)
+
+! Top and bottom walls: No-slip
+!---------------------------------------------------------------------//
+! Bottom wall
+  BC_X_w(3) =    0.00    ! (m)
+  BC_X_e(3) =    0.20    ! (m)
+  BC_Y_s(3) =    0.00    ! (m)
+  BC_Y_n(3) =    0.00    ! (m)
+
+  BC_TYPE(3) = 'NSW'
+
+! Top wall
+  BC_X_w(4) =    0.00    ! (m)
+  BC_X_e(4) =    0.20    ! (m)
+  BC_Y_s(4) =    0.01    ! (m)
+  BC_Y_n(4) =    0.01    ! (m)
+
+  BC_TYPE(4)  = 'NSW'
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT =        1.0    ! (sec)
+  SPX_DT(1:9) = 9*1.0    ! (sec)
+
+  FULL_LOG = .T.
+
+  RESID_STRING  = 'P0', 'U0', 'V0'
+
+#_______________________________________________________________________
+# DMP SETUP
+
+!  NODESI =  1  NODESJ =  1  NODESK =  1

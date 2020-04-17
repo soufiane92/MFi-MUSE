@@ -1,0 +1,161 @@
+########################################################################
+# Test for chi-scheme implementation                                   #
+#                                                                      #
+# Author: UNKNOWN                                           Date: 2013 #
+########################################################################
+
+  RUN_NAME = 'BUB01'
+  DESCRIPTION = 'Bubbling Fluidized Bed Simulation'
+
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  RUN_TYPE = 'NEW'
+  UNITS = 'CGS'
+
+  TIME  = 0.0
+  TSTOP =0.12
+  DT = 1.0E-4
+
+  ENERGY_EQ = .FALSE.
+  SPECIES_EQ = .TRUE.    .FALSE.
+
+  CHI_SCHEME = .TRUE.
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  DISCRETIZE = 9*3
+
+  TOL_RESID = 1.E-5
+  DEF_COR = .true.
+
+  NORM_G = 0.0
+  NORM_S = 0.0
+  MAX_NIT = 30
+
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES = 'Cylindrical'
+
+  XLENGTH  =   7.0    IMAX =   7
+  YLENGTH  = 100.0    JMAX = 100
+
+  NO_K     = .TRUE.
+
+
+#_______________________________________________________________________
+# MATERIAL SECTION
+
+
+! Gas Section
+!---------------------------------------------------------------------//
+
+  DIF_G0 = 0.1
+  MU_g0 = 1.8E-4
+
+  NMAX_g = 2
+  SPECIES_g(1) = 'O3'                   SPECIES_ALIAS_g(1) = 'O3'
+  SPECIES_g(2) = 'O2 REF ELEMENT    '   SPECIES_ALIAS_g(2) = 'O2'
+
+
+! PARTICLE SECTION
+!---------------------------------------------------------------------//
+
+  e       = 0.8
+  Phi     = 0.0
+  EP_star = 0.42
+
+  RO_s0    = 2.0
+  D_p0     = 0.04
+
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+!                     Bed       Freeboard
+  IC_X_w           =  0.0             0.0
+  IC_X_e           =  7.0             7.0
+  IC_Y_s           =  0.0            50.0
+  IC_Y_n           = 50.0           100.0
+
+  IC_EP_g          =  0.42            1.0
+!  IC_EP_g          =  1.0            1.0
+
+  IC_U_g           =  0.0             0.0
+   IC_V_g           =@(25.9/0.42)     25.9
+!  IC_V_g           =@(25.9)     25.9
+
+  IC_U_s(1,1)      =  0.0             0.0
+  IC_V_s(1,1)      =  0.0             0.0
+
+  IC_P_star        =  0.0             0.0
+  IC_T_g           = 300.0          300.0
+  IC_X_g(1,1)      =  1.0             1.0
+  IC_X_g(1,2)      =  0.0             0.0
+
+
+
+#_______________________________________________________________________
+# BOUNDARY CONDITIONS SECTION
+
+!                     Jet   Grid     Exit
+  BC_X_w           =  0.0    1.0      0.0
+  BC_X_e           =  1.0    7.0      7.0
+  BC_Y_s           =  0.0    0.0    100.0
+  BC_Y_n           =  0.0    0.0    100.0
+
+  BC_TYPE          = 'MI'   'MI'    'PO'
+
+  BC_EP_g          =  1.0    1.0
+
+  BC_U_g           =  0.0    0.0
+  BC_V_g           = 25.9   25.9
+
+  BC_P_g           = 1.013E6  1.013E6   1.013E6
+  BC_T_g           = 300.0   300.0
+
+  BC_X_g(1,1)      =  0.0    1.0
+  BC_X_g(1,2)      =  1.0    0.0
+
+  BC_Jet_g0        = 25.9
+  BC_DT_0          =  0.0
+  BC_Jet_gh        =100.0
+  BC_DT_h          =  0.2
+  BC_Jet_gl        = 25.9
+  BC_DT_l          =  0.9
+
+
+#_______________________________________________________________
+# CHEMICAL REACTION SECTION
+
+  C(1) = 1.E-3   !rate constant
+
+  @(RXNS)
+    O2_to_O3 { chem_eq = "3.0*O2 --> 2.0*O3" }
+  @(END)
+
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT = 0.01
+
+  SPX_DT(1:11) = 11*100.0
+
+  SPX_DT(1) = 0.01 ! EP_g
+  SPX_DT(2) = 0.10 ! P_g, P_star
+  SPX_DT(3) = 0.01 ! U_g, V_g, W_g
+  SPX_DT(4) = 0.10 ! U_s, V_s, W_s
+  SPX_DT(7) = 0.01 ! X_g, X_s
+
+  NLOG   = 100
+
+  FULL_LOG = .TRUE.
+
+  RESID_STRING = 'P0' 'P1' 'V0' 'V1' 'X001' 'X002'
+
+  REPORT_MASS_BALANCE_DT = 0.1

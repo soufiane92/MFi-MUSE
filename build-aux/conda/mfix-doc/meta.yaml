@@ -1,0 +1,21 @@
+package:
+  name: mfix-doc
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
+
+build:
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', '') }}
+  noarch: generic
+
+source:
+  path: ../../..
+
+requirements:
+  build:
+    - sphinx
+    - sphinx_rtd_theme
+
+about:
+  home: https://mfix.netl.doe.gov/mfix
+  license: NONE
+  summary: 'Multiphase Fluid Solver'
+  license_family: NONE
