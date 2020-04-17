@@ -1,0 +1,89 @@
+#!/bin/csh
+
+## CONFIG
+# Special values
+# SCRIPT - the path of this script, after replacement in the run directory
+# PROJECT_NAME - name of the opened project
+# JOB_ID - the job id extracted using job_id_regex
+# COMMAND - the command to run mfix
+# MFIX_HOME - the path to the mfix directory
+
+[options]
+name: Joule
+job_id_regex: (\d+)
+status_regex: ([rqw])
+submit: qsub ${SCRIPT}
+delete: qdel ${JOB_ID}
+status: qstat -j ${JOB_ID}
+
+[JOB_NAME]
+widget: lineedit
+label: Job Name
+value: ${PROJECT_NAME}
+help: The name of the job.
+
+[CORES]
+widget: spinbox
+label: Number of Cores
+value: 16
+help: The number of cores to request.
+
+[QUEUE]
+widget: combobox
+label: Queue
+value: general
+items: dev|general|short|serial|mgn|pgh|alb|mic|long|leadership|ucfer
+help: The Queue to submit to.
+
+[JOB_TYPE]
+widget: combobox
+label: Parallel Environment
+items: serial|mpi
+value: mpi
+help: The parallel environment to use.
+
+[MODULES]
+widget: listwidget
+label: Modules
+items: mfix/18.1|
+       mfix/17.3|
+       mfix/17.2|
+       mfix/dev|
+       gnu/6.4.0 openmpi/1.10.2_gnu6.4|
+       intel/2017.2.050|
+       intel/2012.0.032 intelmpi/4.0.3.008|
+       intel/2013.1.117 intelmpi/4.1.0.024|
+       intel/2014.1.046 intelmpi/4.1.3.048
+help: Select the modules that need to be loaded.
+
+[LOG]
+widget: checkbox
+label: Log
+help: Log stdout and stderr to ${JOB_NAME}.output, ${JOB_NAME}.error
+true: ## Capture stdout and stderr
+      #$ -o ${JOB_NAME}.output
+      #$ -e ${JOB_NAME}.error
+value: false
+
+## END CONFIG
+
+## The Script
+## Change into the current working directory
+#$ -cwd
+##
+## The name for the job. It will be displayed this way on qstat
+#$ -N ${JOB_NAME}
+##
+## Number of cores to request
+#$ -pe ${JOB_TYPE} ${CORES}
+##
+## Queue Name
+#$ -q ${QUEUE}
+##
+${LOG}
+
+##Load Modules
+module load ${MODULES}
+
+##Run the job
+${COMMAND}

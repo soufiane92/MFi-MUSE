@@ -1,0 +1,112 @@
+#!MC 1410
+$!SETSTYLEBASE FACTORY
+$!PLOTTYPE  = XYLINE
+$!FRAMELAYOUT 
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 25
+  BOXASPECTRATIOLIMIT = 25
+$!GLOBALTIME 
+  SOLUTIONTIME = 0
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    BOX
+      {
+      MARGIN = 2
+      }
+    XYPOS
+      {
+      X = 95
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'en = 1.0'
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 2
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  GRIDAREA
+    {
+    DRAWBORDER = YES
+    }
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    RANGEMIN = -0.011767379760407063391
+    RANGEMAX = 5.8897365595436186325
+    GRSPACING = 1
+    GRIDLINES
+      {
+      SHOW = YES
+      }
+    MINORGRIDLINES
+      {
+      SHOW = YES
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time step (s)'
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0.79173660793668565461
+    RANGEMAX = 0.79174392012466132673
+    GRSPACING = 1E-06
+    GRIDLINES
+      {
+      SHOW = YES
+      }
+    MINORGRIDLINES
+      {
+      SHOW = YES
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'System\'s Kinetic Energy (J) '
+      OFFSET = 10.33
+      }
+    }
+$!SETSTYLEBASE CONFIG

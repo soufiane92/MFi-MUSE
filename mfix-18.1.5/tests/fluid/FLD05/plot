@@ -1,0 +1,243 @@
+#!/usr/bin/gnuplot
+
+reset
+#                     DATA INDEX
+#  > delP_x = -3.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x = -2.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x = -1.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x =  0.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x =  1.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x =  2.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#  > delP_x =  3.0
+#    * jmax =   8
+#    * jmax =  16
+#    * jmax =  32
+#    * jmax =  64
+#
+
+#set style line 1 lt 2 lc rgb '#000000' lw 1 # black
+#set style line 2 lt 1 lc rgb '#9400d3' lw 1 # purple
+#set style line 3 lt 1 lc rgb '#ff4500' lw 1 # orange-1
+#set style line 4 lt 1 lc rgb '#006400' lw 1 # green
+#set style line 5 lt 1 lc rgb '#ffa500' lw 1 # yellow
+#set style line 6 lt 1 lc rgb '#0000ff' lw 1 # blue
+#set style line 7 lt 1 lc rgb '#800000' lw 1 # brown
+#set style line 8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+
+# color definitions
+set border linewidth 1.5
+set style line  1 lt 2 lc rgb '#000000' lw 1 # black
+
+set style line  4 lt 1 lc rgb '#ffa500' lw 1 # green
+set style line  6 lt 1 lc rgb '#0000ff' lw 1 # blue
+set style line  8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+set style line 10 lt 1 lc rgb '#9400d3' lw 1 # purple
+
+set style line 11 lt 2 lc rgb '#000000' lw 1 # black
+
+set ylabel "Height (m)"
+
+b2 = b1 = 0
+back(x) = (b2 = b1, b1 = x)
+OOA(x) = (back(x), $0 > 0 ? (log(b2/b1)/log(2)) : 1/0)
+const(x) = 2
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 1 size 1100,400 enhanced dashed
+
+set multiplot layout 1,3 title "Couette Flow: Adverse pressure drop"
+set xlabel "Velocity (m/sec)"
+set xrange [*:*]
+set yrange [0.0:0.01]
+
+set key noreverse inside right bottom
+
+set title ' '
+plot 'POST_VEL.dat' index  0 every  1 using 3:1 w points ls  4 title '  8 mesh',  \
+     'POST_VEL.dat' index  1 every  2 using 3:1 w points ls  6 title ' 16 mesh',  \
+     'POST_VEL.dat' index  2 every  4 using 3:1 w points ls  8 title ' 32 mesh',  \
+     'POST_VEL.dat' index  3 every  8 using 3:1 w points ls 10 title ' 64 mesh',  \
+     'POST_VEL.dat' index  4 every  1 using 3:1 w points ls  4 notitle,  \
+     'POST_VEL.dat' index  5 every  2 using 3:1 w points ls  6 notitle,  \
+     'POST_VEL.dat' index  6 every  4 using 3:1 w points ls  8 notitle,  \
+     'POST_VEL.dat' index  7 every  8 using 3:1 w points ls 10 notitle,  \
+     'POST_VEL.dat' index  8 every  1 using 3:1 w points ls  4 notitle,  \
+     'POST_VEL.dat' index  8 every  2 using 3:1 w points ls  6 notitle,  \
+     'POST_VEL.dat' index 10 every  4 using 3:1 w points ls  8 notitle,  \
+     'POST_VEL.dat' index 11 every  8 using 3:1 w points ls 10 notitle,  \
+     'POST_VEL.dat' index 11 using 2:1 w lines ls 11 lt 3 title 'P=-1 Analytic', \
+     'POST_VEL.dat' index  7 using 2:1 w lines ls 11 lt 2 title 'P=-2 Analytic', \
+     'POST_VEL.dat' index  3 using 2:1 w lines ls 11 lt 1 title 'P=-3 Analytic'
+
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [0.001:1.0]
+set yrange [0.0:0.01]
+
+set key reverse inside left center
+
+set title
+
+set title ' '
+plot 'POST_VEL.dat' index 0 every  1 using 4:1 w points ls  4 notitle, \
+     'POST_VEL.dat' index 1 every  2 using 4:1 w points ls  6 notitle, \
+     'POST_VEL.dat' index 2 every  4 using 4:1 w points ls  8 notitle, \
+     'POST_VEL.dat' index 3 every  8 using 4:1 w points ls 10 notitle
+
+
+set xlabel "Grid Size Measure"
+set ylabel "Observed Order"
+set logscale x
+set xrange [1:10]
+set yrange [1:3]
+
+unset key
+set key inside left top
+
+set ytics
+
+set title ' '
+plot 'POST_VEL_NORMS.dat' using 1:(const($2)) with line ls 11 lt 3 title 'Theoretical order', \
+     'POST_VEL_NORMS.dat' index 0 using 1:(OOA($2)) with linespoints \
+         ls 11 lt -1 pt 6 title 'Observed order'
+
+unset logscale x
+unset multiplot
+
+
+
+#-------------------------------------------------------------------------------------
+
+#plot 'POST_VEL.dat' index  8 every  1 using 4:1 w points ls  4 title '   8 mesh', \
+#     'POST_VEL.dat' index  9 every  2 using 4:1 w points ls  6 title '  16 mesh', \
+#     'POST_VEL.dat' index 10 every  4 using 4:1 w points ls  8 title '  32 mesh', \
+#     'POST_VEL.dat' index 11 every  8 using 4:1 w points ls 10 title '  64 mesh'
+
+
+
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 4 size 900,400 enhanced
+
+set multiplot layout 1,2 title "Couette Flow: Zero pressure gradient"
+set xlabel "Velocity (m/sec)"
+set xrange [*:*]
+set yrange [0.0:0.01]
+
+set key reverse inside right bottom
+
+set title
+plot 'POST_VEL.dat' index 15 using 2:1 w lines ls 11 title 'Analytic', \
+     'POST_VEL.dat' index 12 every  1 using 3:1 w points ls  4 title '  8 mesh',  \
+     'POST_VEL.dat' index 13 every  2 using 3:1 w points ls  6 title ' 16 mesh',  \
+     'POST_VEL.dat' index 14 every  4 using 3:1 w points ls  8 title ' 32 mesh',  \
+     'POST_VEL.dat' index 15 every  8 using 3:1 w points ls 10 title ' 64 mesh'
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [*:*]
+set yrange [0.0:0.01]
+
+set key reverse inside left center
+
+set title
+
+plot 'POST_VEL.dat' index 12 every  1 using 4:1 w points ls  4 title '   8 mesh', \
+     'POST_VEL.dat' index 13 every  2 using 4:1 w points ls  6 title '  16 mesh', \
+     'POST_VEL.dat' index 14 every  4 using 4:1 w points ls  8 title '  32 mesh', \
+     'POST_VEL.dat' index 15 every  8 using 4:1 w points ls 10 title '  64 mesh'
+
+unset logscale x
+unset multiplot
+
+
+
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 5 size 1100,400 enhanced
+
+set multiplot layout 1,3 title "Couette Flow: Favorable pressure gradient"
+set xlabel "Velocity (m/sec)"
+set xrange [*:*]
+set yrange [0.0:0.01]
+
+set key noreverse inside left top
+
+set title ' '
+plot 'POST_VEL.dat' index 27 using 2:1 w lines ls 11 lt 1 title 'P= 3 Analytic', \
+     'POST_VEL.dat' index 23 using 2:1 w lines ls 11 lt 2 title 'P= 2 Analytic', \
+     'POST_VEL.dat' index 19 using 2:1 w lines ls 11 lt 3 title 'P= 1 Analytic', \
+     'POST_VEL.dat' index 16 every  1 using 3:1 w points ls  4 title '  8 mesh', \
+     'POST_VEL.dat' index 17 every  2 using 3:1 w points ls  6 title ' 16 mesh', \
+     'POST_VEL.dat' index 18 every  4 using 3:1 w points ls  8 title ' 32 mesh', \
+     'POST_VEL.dat' index 19 every  8 using 3:1 w points ls 10 title ' 64 mesh', \
+     'POST_VEL.dat' index 20 every  1 using 3:1 w points ls  4 notitle, \
+     'POST_VEL.dat' index 21 every  2 using 3:1 w points ls  6 notitle, \
+     'POST_VEL.dat' index 22 every  4 using 3:1 w points ls  8 notitle, \
+     'POST_VEL.dat' index 23 every  8 using 3:1 w points ls 10 notitle, \
+     'POST_VEL.dat' index 24 every  1 using 3:1 w points ls  4 notitle, \
+     'POST_VEL.dat' index 25 every  2 using 3:1 w points ls  6 notitle, \
+     'POST_VEL.dat' index 26 every  4 using 3:1 w points ls  8 notitle, \
+     'POST_VEL.dat' index 27 every  8 using 3:1 w points ls 10 notitle
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [0.001:1.0]
+set yrange [0.0:0.01]
+
+set key reverse inside left center
+
+set title ' '
+plot 'POST_VEL.dat' index 24 every  1 using 4:1 w points ls  4 notitle, \
+     'POST_VEL.dat' index 25 every  2 using 4:1 w points ls  6 notitle, \
+     'POST_VEL.dat' index 26 every  4 using 4:1 w points ls  8 notitle, \
+     'POST_VEL.dat' index 27 every  8 using 4:1 w points ls 10 notitle
+
+set xlabel "Grid Size Measure"
+set ylabel "Observed Order"
+set logscale x
+set xrange [1:10]
+set yrange [1:3]
+
+unset key
+set key inside left top
+
+set ytics
+
+b2 = b1 = 0
+
+set title ' '
+plot 'POST_VEL_NORMS.dat' using 1:(const($2)) with line ls 11 lt 3 title 'Theoretical order', \
+     'POST_VEL_NORMS.dat' index 6 using 1:(OOA($2)) with linespoints \
+         ls 11 lt -1 pt 6 title 'Observed order'
+
+unset logscale x
+unset multiplot

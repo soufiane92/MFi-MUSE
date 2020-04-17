@@ -1,0 +1,67 @@
+{
+    "FluidBed_2D": {
+        "geometry": "False",
+        "chemistry": "False",
+        "description": "2D FLUIDIZED BED",
+        "solver": "tfm"},
+
+    "FluidBed_3D": {
+        "geometry": "False",
+        "chemistry": "False",
+        "description": "3D SQUARE BUBBLING BED",
+        "solver": "tfm"},
+
+    "FluidBed_DES": {
+        "geometry": "False",
+        "chemistry": "False",
+        "description": "DEM Tutorial: DEM fluidbed with central jet.",
+        "solver": "dem"},
+
+    "Hopper_DEM_3D": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "DEM hopper simulation",
+        "solver": "dem"},
+
+    "Hopper_DEM_Pseudo_2D": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "DEM hopper simulation",
+        "solver": "dem"},
+
+    "Hopper_TFM_3D": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "TFM hopper simulation",
+        "solver": "tfm"},
+
+    "Hopper_TFM_Pseudo_2D": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "TFM hopper simulation",
+        "solver": "tfm"},
+
+    "Silane_Pyrolysis": {
+        "geometry": "False",
+        "chemistry": "True",
+        "description": "MFiX Simulation",
+        "solver": "tfm"},
+
+    "Vortex_Shedding": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "Vortex Shedding",
+        "solver": "single"},
+
+    "Spouted_DEM_Pseudo_2d": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "Pseudo 2D spouted bed DEM simulation",
+        "solver": "dem"},
+
+    "Loopseal_DEM_Psuedo_2d": {
+        "geometry": "True",
+        "chemistry": "False",
+        "description": "Pseudo 2D loop seal DEM simulation",
+        "solver": "dem"}
+}

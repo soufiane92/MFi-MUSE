@@ -1,0 +1,24 @@
+package:
+  name: mfix-src
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
+
+build:
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', '') }}
+  noarch: generic
+
+source:
+  - path: ../../..
+  - git_url: https://github.com/ipkn/crow.git
+    git_rev: master
+    folder: crow_repo
+
+requirements:
+
+  build:
+    - git
+
+about:
+  home: https://mfix.netl.doe.gov/mfix
+  license: NONE
+  summary: 'Multiphase Fluid Solver'
+  license_family: NONE

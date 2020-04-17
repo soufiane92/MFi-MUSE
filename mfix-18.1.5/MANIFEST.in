@@ -1,0 +1,13 @@
+include DISCLAIMER
+include NOTICE
+include README.rst
+include CMakeLists.txt
+
+recursive-include benchmarks *
+recursive-include build-aux *
+recursive-include doc *.rst *.py Makefile *.png
+recursive-include legacy_tests *
+recursive-include model *
+recursive-include post_mfix *
+recursive-include tests *
+recursive-include tutorials *

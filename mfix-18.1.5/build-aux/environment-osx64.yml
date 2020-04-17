@@ -1,0 +1,25 @@
+name: mfix-osx64
+channels:
+  - defaults
+dependencies:
+  - boost=1.65.1
+  - cmake-binary=3.9.1
+  - flask
+  - glib=2.53.6
+  - libboost=1.65.1
+  - libcxx=4.0.1
+  - libcxxabi=4.0.1
+  - libgfortran=3.0.1
+  - matplotlib
+  - nomkl
+  - numpy=1.14.*
+  - pip
+  - psutil
+  - py-boost=1.65.1
+  - pyqt=5.*
+  - pyqtgraph
+  - python=3.6.*
+  - qtpy
+  - setuptools
+  - simplejson
+  - vtk

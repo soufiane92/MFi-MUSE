@@ -1,0 +1,126 @@
+########################################################################
+#                                                                      #
+# Generic template for MFIX GUI *new* case.                            #
+#                                                                      #
+########################################################################
+
+  RUN_NAME = ''
+  DESCRIPTION = 'MFiX Simulation'
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  RUN_TYPE = 'NEW'
+  UNITS = 'SI'
+
+  TIME =  0.0
+  TSTOP = 5.0
+
+  DT = 1.0E-5
+  DT_MAX = 1.0E-4
+  DT_MIN = 1.0E-7
+
+  ENERGY_EQ = .F.
+
+  SPECIES_EQ(0) = .F.
+
+  MOMENTUM_X_EQ(0) = .T.
+  MOMENTUM_Y_EQ(0) = .T.
+  MOMENTUM_Z_EQ(0) = .T.
+
+#_______________________________________________________________________
+# OTHER DEFAULTS SECTION
+
+  GRAVITY_Y = -9.81
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  MAX_NIT = 50
+  DETECT_STALL = .T.
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES = 'CARTESIAN'
+  CARTESIAN_GRID = .False.
+  USE_STL = .False.
+
+  X_MIN = 0    X_MAX = 1.0    IMAX = 1
+  Y_MIN = 0    Y_MAX = 1.0    JMAX = 1
+  Z_MIN = 0    Z_MAX = 1.0    KMAX = 1
+
+#_______________________________________________________________________
+# MATERIAL SECTION
+
+
+! Gas Section
+!---------------------------------------------------------------------//
+  MU_g0 = 1.8d-5  ! (kg/m.s)
+  MW_AVG = 29.0
+
+
+! PARTICLE SECTION
+!---------------------------------------------------------------------//
+  MMAX = 0
+  EP_STAR = 0.42
+
+#----------------------------  TFM DEFAULTS  --------------------------#
+  KT_TYPE = 'ALGEBRAIC'
+  FRICTION_MODEL = 'SCHAEFFER'
+  C_e = 0.95
+  C_f = 0.10
+  PHI = 30.0
+  PHI_W = 11.3
+
+#----------------------------  DEM DEFAULTS  --------------------------#
+  MEW = 0.1
+  MEW_W = 0.1
+  KN = 1000
+  KN_W = 1000
+  DES_EN_INPUT(1) = 0.9
+  DES_EN_WALL_INPUT(1) = 0.9
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+! Background - full domain initialize
+!---------------------------------------------------------------------//
+  IC_X_w(1) = 0.0 #!MFIX-GUI eq{xmin,float}
+  IC_Y_s(1) = 0.0 #!MFIX-GUI eq{ymin,float}
+  IC_Z_b(1) = 0.0 #!MFIX-GUI eq{zmin,float}
+  IC_X_e(1) = 1.0 #!MFIX-GUI eq{xmax,float}
+  IC_Y_n(1) = 1.0 #!MFIX-GUI eq{ymax,float}
+  IC_Z_t(1) = 1.0 #!MFIX-GUI eq{zmax,float}
+
+  IC_EP_g(1) = 1.0
+
+  IC_T_g(1) = 293.15
+
+  IC_U_g(1) = 0.0
+  IC_V_g(1) = 0.0
+  IC_W_g(1) = 0.0
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT =        0.1
+  SPX_DT(1:9) = 9*0.1
+
+  FULL_LOG = .T.
+
+  RESID_STRING = 'P0' 'U0' 'V0'
+
+#_______________________________________________________________________
+# DMP SETUP
+
+  CHK_BATCHQ_END = .T.
+
+#!MFIX-GUI SECTION
+#!MFIX-GUI regions_dict = {"regions": {"Background IC": {"color": "#ffffff",
+#!MFIX-GUI   "to": [{"eq": "xmax", "__type__": "equation", "type":
+#!MFIX-GUI   "float"}, {"eq": "ymax", "__type__": "equation", "type": "float"},
+#!MFIX-GUI   {"eq": "zmax", "__type__": "equation", "type": "float"}], "from":
+#!MFIX-GUI   [{"eq": "xmin", "__type__": "equation", "type": "float"}, {"eq":
+#!MFIX-GUI   "ymin", "__type__": "equation", "type": "float"}, {"eq": "zmin",
+#!MFIX-GUI   "__type__": "equation", "type": "float"}]}}, "order": ["Background IC"]}

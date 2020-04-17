@@ -1,0 +1,148 @@
+#!/usr/bin/gnuplot
+
+reset
+#                     DATA INDEX
+#  > delP_x =  0.0
+#    * jmax = 128
+#    * jmax = 256
+#    * jmax = 512
+#                        
+#  > delP_x =  1.0
+#    * jmax = 128
+#    * jmax = 256
+#    * jmax = 512
+#                        
+#  > delP_x = -1.0
+#    * jmax = 128
+#    * jmax = 256
+#    * jmax = 512
+#                        
+
+#set style line 1 lt 2 lc rgb '#000000' lw 1 # black
+#set style line 2 lt 1 lc rgb '#9400d3' lw 1 # purple
+#set style line 3 lt 1 lc rgb '#ff4500' lw 1 # orange-1
+#set style line 4 lt 1 lc rgb '#006400' lw 1 # green
+#set style line 5 lt 1 lc rgb '#ffa500' lw 1 # yellow
+#set style line 6 lt 1 lc rgb '#0000ff' lw 1 # blue
+#set style line 7 lt 1 lc rgb '#800000' lw 1 # brown
+#set style line 8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+
+# color definitions
+set border linewidth 1.5
+set style line 1 lt 2 lc rgb '#000000' lw 1 # black
+
+set style line 4 lt 1 lc rgb '#ffa500' lw 1 # green
+set style line 6 lt 1 lc rgb '#0000ff' lw 1 # blue
+set style line 8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+
+set style line 11 lt 2 lc rgb '#000000' lw 1 # black
+
+set ylabel "Height (m)"
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 1 size 900,400 enhanced
+#set terminal pngcairo size 900,400 enhanced font 'Verdana, 10'
+#set output "DEM01_Kn01POS.png"
+
+set multiplot layout 1,2 title "Couette Flow: Zero pressure gradient"
+set xlabel "Velocity (m/sec)"
+
+set key reverse inside right bottom
+
+set title
+plot 'POST_VEL.dat' index 2 using 2:1 w lines ls 11 title 'Analytic', \
+     'POST_VEL.dat' index 0 every  4 using 3:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 1 every  8 using 3:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 2 every 16 using 3:1 w points ls 8 title '512 mesh'
+ 
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [1.0e-06 : 1.0e+0]
+
+set key reverse inside left bottom
+
+set title
+
+plot 'POST_VEL.dat' index 0 every  4 using 5:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 1 every  8 using 5:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 2 every 16 using 5:1 w points ls 8 title '512 mesh'
+
+unset logscale x
+unset multiplot
+
+
+
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 2 size 900,400 enhanced
+
+set multiplot layout 1,2 title "Couette Flow: Favorable pressure gradient"
+set xlabel "Velocity (m/sec)"
+
+set key reverse inside right bottom
+
+set xrange [* : *]
+set yrange [* : *]
+
+set title
+plot 'POST_VEL.dat' index 5 using 2:1 w lines ls 11 title 'Analytic', \
+     'POST_VEL.dat' index 3 every  4 using 3:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 4 every  8 using 3:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 5 every 16 using 3:1 w points ls 8 title '512 mesh'
+ 
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [1.0e-06 : 1.0e-1]
+
+set key reverse inside left bottom
+
+set title
+
+plot 'POST_VEL.dat' index 3 every  4 using 5:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 4 every  8 using 5:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 5 every 16 using 5:1 w points ls 8 title '512 mesh'
+
+unset logscale x
+unset multiplot
+
+
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 3 size 900,400 enhanced
+
+set multiplot layout 1,2 title "Couette Flow: Adverse pressure gradient"
+set xlabel "Velocity (m/sec)"
+
+set key reverse inside right bottom
+
+set xrange [* : *]
+set yrange [* : *]
+
+set title
+plot 'POST_VEL.dat' index 7 using 2:1 w lines ls 11 title 'Analytic', \
+     'POST_VEL.dat' index 6 every  4 using 3:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 7 every  8 using 3:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 8 every 16 using 3:1 w points ls 8 title '512 mesh'
+ 
+
+set xlabel "abs error (m/sec)"
+set logscale x
+set xrange [1.0e-06 : 1.0e-1]
+
+set key reverse inside left bottom
+
+set title
+
+plot 'POST_VEL.dat' index 6 every  4 using 5:1 w points ls 4 title '128 mesh', \
+     'POST_VEL.dat' index 7 every  8 using 5:1 w points ls 6 title '256 mesh', \
+     'POST_VEL.dat' index 8 every 16 using 5:1 w points ls 8 title '512 mesh'
+
+unset logscale x
+unset multiplot
+
+

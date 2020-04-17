@@ -1,0 +1,158 @@
+#!/usr/bin/gnuplot
+
+reset
+
+#set style line 1 lt 2 lc rgb '#000000' lw 1 # black
+#set style line 2 lt 1 lc rgb '#9400d3' lw 1 # purple
+#set style line 3 lt 1 lc rgb '#ff4500' lw 1 # orange-1
+#set style line 4 lt 1 lc rgb '#006400' lw 1 # green
+#set style line 5 lt 1 lc rgb '#ffa500' lw 1 # yellow
+#set style line 6 lt 1 lc rgb '#0000ff' lw 1 # blue
+#set style line 7 lt 1 lc rgb '#800000' lw 1 # brown
+#set style line 8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+
+# color definitions
+set border linewidth 1.5
+set style line  1 lt 2 lc rgb '#000000' lw 1 # black
+
+set style line  4 lt 1 lc rgb '#ffa500' lw 1 # green
+set style line  6 lt 1 lc rgb '#0000ff' lw 1 # blue
+set style line  8 lt 1 lc rgb '#ff0000' lw 1 # orange-2
+set style line 10 lt 1 lc rgb '#9400d3' lw 1 # purple
+
+set style line 11 lt 2 lc rgb '#000000' lw 1 # black
+
+
+b2 = b1 = 0
+back(x) = (b2 = b1, b1 = x)
+OOA(x) = (back(x), $0 > 0 ? (log(b2/b1)/log(2)) : 1/0)
+const(x) = 2
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 1 size 900,400 enhanced dashed
+
+set multiplot layout 1,2 title 'Lid-driven cavity flow: Re =  100'
+set xlabel "Height (m)"
+set ylabel "Ug, x-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+set key reverse inside left center
+
+set title
+plot 'POST_UG_Re00100.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'POST_UG_Re00100.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+set xlabel "Length (m)"
+set ylabel "Vg, y-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+
+set key reverse inside left center
+
+set title
+plot 'POST_VG_Re00100.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'POST_VG_Re00100.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+unset logscale x
+unset multiplot
+
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 2 size 900,400 enhanced dashed
+
+set multiplot layout 1,2 title 'Lid-driven cavity flow: Re =  400'
+set xlabel "Height (m)"
+set ylabel "Ug, x-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+
+set key reverse inside left center
+
+set title
+plot 'POST_UG_Re00400.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'POST_UG_Re00400.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+set xlabel "Length (m)"
+set ylabel "Vg, y-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+set key reverse inside left center
+
+set title
+plot 'POST_VG_Re00400.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'POST_VG_Re00400.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+unset logscale x
+unset multiplot
+
+#-------------------------------------------------------------------------------------
+# WARNING: The following plots archived data for Re = 1000
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 3 size 900,400 enhanced dashed
+
+set multiplot layout 1,2 title 'Lid-driven cavity flow: Re = 1000'
+set xlabel "Height (m)"
+set ylabel "Ug, x-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+
+set key reverse inside left center
+
+set title
+plot 'AUTOTEST/arc_POST_UG_Re01000.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'AUTOTEST/arc_POST_UG_Re01000.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+set xlabel "Length (m)"
+set ylabel "Vg, y-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+set key reverse inside left center
+
+set title
+plot 'AUTOTEST/arc_POST_VG_Re01000.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'AUTOTEST/arc_POST_VG_Re01000.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+unset logscale x
+unset multiplot
+
+
+#-------------------------------------------------------------------------------------
+# WARNING: The following plots archived data for Re = 3200
+#-------------------------------------------------------------------------------------
+
+set terminal wxt 4 size 900,400 enhanced dashed
+
+set multiplot layout 1,2 title 'Lid-driven cavity flow: Re = 3200'
+set xlabel "Height (m)"
+set ylabel "Ug, x-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+
+set key reverse inside left center
+
+set title "
+plot 'AUTOTEST/arc_POST_UG_Re03200.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'AUTOTEST/arc_POST_UG_Re03200.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+set xlabel "Length (m)"
+set ylabel "Vg, y-axis velocity (m/sec)"
+set xrange [*:*]
+set yrange [*:*]
+
+set key reverse inside left center
+
+set title
+plot 'AUTOTEST/arc_POST_VG_Re03200.dat' index 0 using 1:2 w points ls  6 title 'Ghia', \
+     'AUTOTEST/arc_POST_VG_Re03200.dat' index 1 using 1:2 w lines  ls 11 lt 1 title 'MFIX'
+
+unset logscale x
+unset multiplot

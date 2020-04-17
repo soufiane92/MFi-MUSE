@@ -1,0 +1,344 @@
+image: continuumio/anaconda3:5.1.0
+
+stages:
+  - build
+  - build-solver
+  - build-all
+  - test-solver
+
+.only_template: &only_def
+  only:
+    - develop
+    - tags
+
+variables:
+  FLAGS: --no-test --no-anaconda-upload --output-folder dist
+
+build:noarch:
+  script:
+    - rm -rf dist
+    - conda build $FLAGS build-aux/conda/mfix-doc
+    - conda build $FLAGS build-aux/conda/mfix-src -c mfix
+    - conda build $FLAGS build-aux/conda/mfix-gui
+  stage: build
+  retry: 2
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist/linux-64
+      - dist/noarch
+      - dist/osx-64
+      - dist/win-64
+  tags:
+    - docker
+
+.clean: &clean_def
+  script:
+    - conda build purge
+    - conda clean --all -y
+  stage: build
+  when: manual
+
+clean:mac:
+  <<: *clean_def
+  tags:
+    - mac
+
+clean:windows:
+  <<: *clean_def
+  tags:
+    - windows
+
+clean:docker:
+  <<: *clean_def
+  tags:
+    - docker
+
+.build:solver: &buildsolver_def
+  stage: build-solver
+  retry: 2
+  dependencies:
+    - build:noarch
+
+build:linux64-solver:
+  script:
+    - rm -rf dist && mkdir dist
+    - conda build $FLAGS -c $PWD/dist build-aux/conda/mfix-solver
+  <<: *buildsolver_def
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist/linux-64
+  tags:
+    - docker
+
+build:osx64-solver:
+  script:
+    - rm -rf dist && mkdir dist
+    - conda build $FLAGS -c $PWD/dist build-aux/conda/mfix-solver
+  allow_failure: true
+  <<: *buildsolver_def
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist/osx-64
+  tags:
+    - mac
+
+build:win64-solver:
+  script:
+    - call conda index dist/noarch
+    - conda build %FLAGS% -c %cd%\dist build-aux/conda/mfix-solver
+  allow_failure: true
+  <<: *buildsolver_def
+  artifacts:
+    name: "%CI_JOB_NAME%"
+    expire_in: 1 week
+    paths:
+      - dist/win-64
+  tags:
+    - windows
+
+.build:crowsolver: &buildcrowsolver_def
+  stage: build-solver
+  retry: 2
+  allow_failure: true
+
+build:linux64-crowsolver:
+  script:
+    - rm -rf dist && mkdir dist
+    - conda build $FLAGS build-aux/conda/mfix-crowsolver
+  <<: *buildcrowsolver_def
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist
+  tags:
+    - docker
+
+build:osx64-crowsolver:
+  script:
+    - rm -rf dist && mkdir dist
+    - conda build $FLAGS build-aux/conda/mfix-crowsolver
+  <<: *buildcrowsolver_def
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist
+  tags:
+    - mac
+
+build:win64-crowsolver:
+  script:
+    - conda build %FLAGS% -c mfix build-aux/conda/mfix-crowsolver
+  <<: *buildcrowsolver_def
+  artifacts:
+    name: "%CI_JOB_NAME%"
+    expire_in: 1 week
+    paths:
+      - dist
+  tags:
+    - windows
+
+build:libboost-mingw:
+  variables:
+    CONDA_BLD: "C:/ProgramData/Anaconda3/conda_bld"
+  script:
+    - rmdir /Q /S dist
+    - mkdir dist
+    - conda build %FLAGS% build-aux/conda/boost-mingw
+  allow_failure: true
+  stage: build
+  when: manual
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist/win-64
+  tags:
+    - windows
+
+.pytest: &pytest_def
+  stage: build-solver
+  retry: 2
+  # <<: *only_def
+  dependencies:
+    - build:noarch
+
+pytest:linux64:
+  <<: *pytest_def
+  allow_failure: true
+  script:
+    - conda build -c $PWD/dist -c conda-forge --test dist/noarch/mfix-gui*.bz2
+  image: continuumio/conda-concourse-ci
+  tags:
+    - docker
+
+pytest:osx64:
+  <<: *pytest_def
+  allow_failure: true
+  script:
+    - conda build -c $PWD/dist -c mfix --test dist/noarch/mfix-gui*.bz2
+  tags:
+    - mac
+
+pytest:win64:
+  <<: *pytest_def
+  allow_failure: true
+  script:
+    - conda build -c %cd%\dist -c mfix --test dist/noarch/mfix-gui*.bz2
+  tags:
+    - windows
+
+ctest:intel:
+  script:
+    - module purge
+    - module load mfix/dev intel; spack load numdiff
+    - ifort --version
+    - mkdir build
+    - cd build
+    - env F77=ifort FC=ifort cmake -DCMAKE_Fortran_FLAGS="-ftrapuv" -DENABLE_OpenMP=1 .. -DENABLE_CTEST=ON
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -R tutorials_FluidBed_2D
+  stage: test-solver
+  allow_failure: true
+  retry: 2
+  tags:
+    - joule
+  <<: *only_def
+
+ctest:netcdf:
+  script:
+    - module purge
+    - module load mfix/dev; spack load numdiff
+    - cd tutorials/FluidBed_DES
+    - cmake -DENABLE_NETCDF=YES ../.. -DENABLE_CTEST=ON
+    - make -j
+    - mv DES_FB1.mfx mfix.dat
+    - rm -f  DES_FB1*
+    - mv mfix.dat DES_FB1.mfx
+    - ./mfixsolver -f DES_FB1.mfx
+  stage: test-solver
+  allow_failure: true
+  tags:
+    - joule
+  retry: 2
+  <<: *only_def
+
+
+.ctest_template: &ctest_def
+  stage: test-solver
+  tags:
+    - joule
+  allow_failure: true
+  retry: 2
+  <<: *only_def
+
+
+ctest:serial:
+  script:
+    - module purge; module load mfix/dev; spack load numdiff
+    - mkdir build
+    - cd build
+    - cmake -DENABLE_MPI=0 -DENABLE_OpenMP=0 .. -DENABLE_CTEST=ON
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -L SERIAL
+  <<: *ctest_def
+
+
+ctest:dmp:
+  script:
+    - module purge; module load mfix/dev; spack load numdiff
+    - mkdir build
+    - cd build
+    - cmake -DENABLE_MPI=1 -DENABLE_OpenMP=0 .. -DENABLE_CTEST=ON -DMPI_Fortran_COMPILER=mpifort
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -L DMP
+  when: manual
+  <<: *ctest_def
+
+
+ctest:smp:
+  script:
+    - module purge; module load mfix/dev; spack load numdiff
+    - mkdir build
+    - cd build
+    - env F77=$FC FC=$FC cmake -DENABLE_MPI=0 -DENABLE_OpenMP=1 .. -DENABLE_CTEST=ON
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -L SMP
+  <<: *ctest_def
+
+
+ctest:coverage:
+  script:
+    - mkdir coverage
+
+    - mkdir build_dmp && cd build_dmp
+    - env F77=$FC FC=$FC cmake -DENABLE_MPI=0 -DENABLE_OpenMP=0 -DENABLE_COVERAGE=1 .. -DENABLE_CTEST=ON
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -L SERIAL
+    - make coverage
+    - mv coverage ../coverage/dmp
+    - cd ..
+
+    - mkdir build_serial && cd build_serial
+    - cmake -DENABLE_MPI=1 -DENABLE_OpenMP=0 -DENABLE_COVERAGE=1 .. -DENABLE_CTEST=ON -DMPI_Fortran_COMPILER=mpifort
+    - make -j
+    - env CTEST_OUTPUT_ON_FAILURE=yes ctest -L DMP
+    - make coverage
+    - mv coverage ../coverage/serial
+    - cd ..
+  stage: test-solver
+  allow_failure: true
+  retry: 2
+  when: manual
+  <<: *only_def
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - coverage
+  tags:
+    - joule
+
+
+build:mfix-metapackage:
+  variables:
+    CONDA_BLD: "/opt/conda/conda-bld"
+  script:
+    - conda index dist/linux-64
+    - conda index dist/noarch
+    - conda index dist/osx-64
+    - conda index dist/win-64
+    - VERSION=$(git describe --abbrev=0)
+    - BUILD_NUM=$(git describe --always | cut -d'-' -f2)
+    - if [[ $BUILD_NUM = $VERSION ]] ; then BUILD_NUM=0; fi
+    - conda metapackage mfix $VERSION --build-number $BUILD_NUM --summary "MFiX" --dependencies "mfix-doc ==$VERSION" "mfix-gui ==$VERSION" "mfix-solver ==$VERSION" "mfix-src ==$VERSION" -c $PWD/dist
+    - conda convert -p all $CONDA_BLD/linux-64/mfix-$VERSION-* -o dist
+    - cp $CONDA_BLD/linux-64/mfix* dist/linux-64
+  stage: build-all
+  retry: 2
+  artifacts:
+    name: "$CI_JOB_NAME"
+    expire_in: 1 week
+    paths:
+      - dist/linux-64
+      - dist/noarch
+      - dist/osx-64
+      - dist/win-64
+      - build-aux/environment-*.yml
+  dependencies:
+    - build:noarch
+    - build:win64-solver
+    - build:osx64-solver
+    - build:linux64-solver
+    - build:win64-crowsolver
+    - build:osx64-crowsolver
+    - build:linux64-crowsolver
+  tags:
+    - docker

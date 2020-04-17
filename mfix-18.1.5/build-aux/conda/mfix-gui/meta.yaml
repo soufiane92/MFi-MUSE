@@ -1,0 +1,73 @@
+package:
+  name: mfix-gui
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
+
+build:
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', '') }}
+  noarch: python
+
+  entry_points:
+    - mfix = mfixgui.gui:main
+    - build_mfixsolver = mfixgui.build_mfixsolver:main
+    - mfixversioninfo = mfixgui.version_info:main
+
+source:
+  path: ../../..
+
+requirements:
+  build:
+    - python >=3.6
+    - setuptools >=39
+    - wheel >=0.25.0
+    - matplotlib
+    - nomkl # [not win]
+    - numpy
+    - psutil
+    - pyqt >=5
+    - pyqtgraph
+    - qtpy >=1.2.1
+    - simplejson
+
+  run:
+    - python >=3.6
+    - setuptools >=39
+    - boost
+    - cmake-binary >=3.9
+    - flask
+    - matplotlib
+    - numpy
+    - psutil
+    - pyqt >=5
+    - pyqtgraph
+    - qtpy >=1.2.1
+    - simplejson
+    - vtk
+    - wheel >=0.25.0
+    - mfix-src {{ environ.get('GIT_DESCRIBE_TAG', '') }}.*
+
+test:
+  source_files:
+    - pylintrc
+    - mfixgui
+
+  requires:
+    - pylint
+    - pytest
+    - pytest-cov
+    - pytest-mock
+    - pytest-qt
+
+  imports:
+    - mfixgui.gui
+
+  commands:
+     - pylint -j 2 -f colorized mfixgui --disable=W,C,R -r n -s n || exit $(( $? & 2 ))
+     - cmd /C "set QT_QPA_PLATFORM=offscreen&pytest --color=yes --no-cov-on-fail --cov=mfixgui --cov-report=term-missing:skip-covered mfixgui" [win]
+     - env QT_QPA_PLATFORM=offscreen pytest --color=yes --no-cov-on-fail --cov=mfixgui --cov-report=term-missing:skip-covered mfixgui [osx]
+     - env QT_QPA_PLATFORM=offscreen pytest --color=yes --no-cov-on-fail --cov=mfixgui --cov-report=term-missing:skip-covered mfixgui || exit 0 [linux]
+
+about:
+  home: https://mfix.netl.doe.gov/mfix
+  license: NONE
+  summary: 'Multiphase Fluid Solver'
+  license_family: NONE

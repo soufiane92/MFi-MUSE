@@ -1,0 +1,112 @@
+########################################################################
+#                                                                      #
+# Author: Aniruddha Choudhary                           Date: Jun 2015 #
+# Gresho problem: A stationary rotating vortex.                        #
+#                                                                      #
+# References:                                                          #
+#   [1] Liska, R. & Wendroff, B. (2003). Comparison of Several         #
+#   Difference Schemes on 1D and 2D Test Problems for the              #
+#   Euler Equations.                                                   #
+#   SIAM J. Sci. Comput., 25, 995--1017.                               #
+#   doi: 10.1137/s1064827502402120                                     #
+#                                                                      #
+#   [2] Gresho, P. M. & Chan, S. T. (1990). On the theory of           #
+#   semi-implicit projection methods for viscous incompressible flow   #
+#   and its implementation via a finite element method that also       #
+#   introduces a nearly consistent mass matrix.                        #
+#   Part 2: Implementation.                                            #
+#   International Journal for Numerical Methods in Fluids,             #
+#   11, 621--659.                                                      #
+#   doi: 10.1002/fld.1650110510                                        #
+#                                                                      #
+########################################################################
+
+  RUN_NAME = 'FLD04'
+  DESCRIPTION = 'Gresho vortex problem'
+
+#_______________________________________________________________________
+# RUN CONTROL SECTION
+
+  UNITS = 'SI'
+  RUN_TYPE = 'NEW'
+
+  TIME =  0.0
+  TSTOP = 3.0
+
+  DT =     1.0e-2
+  DT_FAC = 1.0
+
+  ENERGY_EQ =     .F.
+  SPECIES_EQ(0) = .F.
+
+  GRAVITY = 0.0
+
+  CALL_USR = .T.
+
+#_______________________________________________________________________
+# NUMERICAL SECTION
+
+  MAX_NIT = 100000
+
+  TOL_RESID =  1.0e-4
+
+  LEQ_PC(1:9) = 9*'DIAG'
+
+
+#_______________________________________________________________________
+# GEOMETRY SECTION
+
+  COORDINATES  = 'CARTESIAN'
+
+  ZLENGTH = 1.0    NO_K = .T.
+  XLENGTH = 1.0    IMAX = 40
+  YLENGTH = 1.0    JMAX = 40
+
+#_______________________________________________________________________
+# GAS-PHASE SECTION
+
+  RO_G0 = 1.0     ! (kg/m3)
+  MU_G0 = 0.0     ! (Pa.sec)
+
+#_______________________________________________________________________
+# SOLIDS-PHASE SECTION
+
+  MMAX = 0
+
+#_______________________________________________________________________
+# INITIAL CONDITIONS SECTION
+
+  IC_X_w(1) =    0.00  ! (m)
+  IC_X_e(1) =    1.00  ! (m)
+  IC_Y_s(1) =    0.00  ! (m)
+  IC_Y_n(1) =    1.00  ! (m)
+
+  IC_EP_g(1) =   1.00
+
+  IC_U_g(1) =    1.00  ! (m/sec)
+  IC_V_g(1) =    0.00  ! (m/sec)
+
+#_______________________________________________________________________
+# BOUNDARY CONDITIONS SECTION
+
+! West, East, South, and North: Periodic BCs
+!---------------------------------------------------------------------//
+
+  CYCLIC_X    = .T.
+  CYCLIC_Y    = .T.
+
+
+#_______________________________________________________________________
+# OUTPUT CONTROL SECTION
+
+  RES_DT =        0.1   ! (sec)
+  SPX_DT(1:9) = 9*0.1   ! (sec)
+
+  FULL_LOG = .T.
+
+  RESID_STRING  = 'P0' 'U0' 'V0'
+
+#_______________________________________________________________________
+# DMP SETUP
+
+!  NODESI =  1  NODESJ =  1  NODESK =  1
